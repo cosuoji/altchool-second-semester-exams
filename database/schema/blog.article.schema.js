@@ -13,7 +13,10 @@ const blogArticleSchema = mongoose.Schema({
     author:{
         type: String,
         
-    }, 
+    },
+    authorId:{
+        type:String,
+    } ,
     state:{
       type: String,
       enum: ["DRAFT", "PUBLISHED"],

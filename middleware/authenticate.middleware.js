@@ -1,8 +1,10 @@
 import jwt from "jsonwebtoken"
+//import { tokenToExport } from "../controller/authentication.controller.js";
 
-export let emailId;
+export let emailId, userId;
 
 export const authMiddleware = (req, res, next) =>{
+
     const authorization = req.headers.authorization;
 
     if(!authorization){
@@ -19,7 +21,11 @@ export const authMiddleware = (req, res, next) =>{
             return res.status(401).json({message: "Unauthorized"})
         }
 
+        
+        req.user = decoded
+        //console.log(decoded)
         emailId = decoded.email
+        userId = decoded._id
         next();
     })
 }

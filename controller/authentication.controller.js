@@ -1,9 +1,12 @@
 import * as authService from "../services/authenticate.services.js"
 
+export let tokenToExport; 
+
 export const login = async (req, res)=>{
     try {
         const { email, password} = req.body;
         const token = await authService.login(email, password)
+        tokenToExport = token
         res.json({
             message: "Login successful",
             data: {

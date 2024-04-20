@@ -6,7 +6,7 @@ import blogRoute from "../routes/blogRoute.js";
 
 dotenv.config();
 const app = express(); 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3000
 const MONGODB_URI = process.env.MONGODB_URI 
 app.use(express.json())
 
