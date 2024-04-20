@@ -27,11 +27,11 @@ export const login = async (email, password) =>{
         //Set it to expire in an hour
         JWT_SECRET, {expiresIn: "1hr"}   
 )
-
         return{
             message: "Login Successful",
             data: {
                 accessToken: token,
+                user: user,
             }
         }
 
@@ -61,3 +61,4 @@ export const register = async (first_name, last_name, email, password) =>{
     }
 
 }
+

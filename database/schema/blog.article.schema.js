@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import mongoose, { SchemaType } from "mongoose";
+//import User from "./user.schema.js";
 
 const blogArticleSchema = mongoose.Schema({
     title: {
@@ -10,8 +11,8 @@ const blogArticleSchema = mongoose.Schema({
         type:String,
     },
     author:{
-        type: String, 
-        requires: true,
+        type: String,
+        
     }, 
     state:{
       type: String,
@@ -22,7 +23,7 @@ const blogArticleSchema = mongoose.Schema({
         type: Number,
     },
     reading_time:{
-        type: Number,
+        type: String,
         required: true, 
     },
     tags:{
@@ -36,13 +37,6 @@ const blogArticleSchema = mongoose.Schema({
     timestamps: true
 })
 
-userSchema.set("toJSON", {
-    virtuals: true, 
-    versionKey: false, 
-    transform: function(doc, ret){
-        delete ret._id
-    }
-})
 
-const User = mongoose.model("User", userSchema)
-export default User
+const Blogs = mongoose.model("Blogs", blogArticleSchema)
+export default Blogs

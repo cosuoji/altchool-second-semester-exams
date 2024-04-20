@@ -1,14 +1,12 @@
 import jwt from "jsonwebtoken"
 
-import jwt from "jsonwebtoken"
+export let emailId;
 
 export const authMiddleware = (req, res, next) =>{
-    //console.log("Auth Middleware")
-
     const authorization = req.headers.authorization;
 
-     if(!authorization){
-        return res.status(401).json({message: "Not authorized"})
+    if(!authorization){
+        return res.status(401).json({message: "Not Authorized to create blogs"})
     }
 
     const bearerToken = authorization.split(" ")
@@ -20,11 +18,12 @@ export const authMiddleware = (req, res, next) =>{
         if(err){
             return res.status(401).json({message: "Unauthorized"})
         }
-    
-        req.user = decoded
-         next();
 
+        emailId = decoded.email
+        next();
     })
-
- 
 }
+
+
+
+
