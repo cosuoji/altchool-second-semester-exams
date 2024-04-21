@@ -31,7 +31,7 @@ export const login = async (email, password) =>{
             message: "Login Successful",
             data: {
                 accessToken: token,
-                user: user,
+                //user: user,
             }
         }
 
@@ -55,9 +55,9 @@ export const register = async (first_name, last_name, email, password) =>{
 
     return {
         message: "User created successfully",
-        data: {
-            user: newUser
-        }
+    //   //  data: {
+    //         user: newUser
+    //     }
     }
 
 }

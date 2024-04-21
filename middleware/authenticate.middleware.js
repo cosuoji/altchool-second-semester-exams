@@ -7,7 +7,7 @@ export const authMiddleware = (req, res, next) =>{
     const authorization = req.headers.authorization;
 
     if(!authorization){
-        return res.status(401).json({message: "Not Authorized to create blogs"})
+        return res.status(401).json({message: "Not Authorized to create or edit blogs"})
     }
 
     const bearerToken = authorization.split(" ")

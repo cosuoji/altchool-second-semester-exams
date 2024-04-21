@@ -15,8 +15,8 @@ export const getAllArticles = async(req, res) =>{
 
 export const createArticle = async(req, res) =>{
     try{
-        const {title, description, reading_time, tags, body} = req.body;
-        const result = await blogService.createArticle(title, description,reading_time, tags, body);
+        const {title, description, tags, body} = req.body;
+        const result = await blogService.createArticle(title, description,tags, body);
         //console.log(result)
         res.json(result)
     }
@@ -27,8 +27,8 @@ export const createArticle = async(req, res) =>{
 
 export const searchArticles = async(req, res)=>{
     try{
-        const {title} = req.query;
-        const result = await blogService.searchArticles(title)
+        const searchQuery = req.query;
+        const result = await blogService.searchArticles(searchQuery)
         res.json(result)
 
     }
@@ -42,6 +42,29 @@ export const viewBlogByUserId = async (req, res) =>{
         const userId = req.params.userId;
         const stateKey = Object.keys(req.query)[0]
         const result = await blogService.viewBlogByUserId(userId, stateKey)
+        res.json(result)
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+}
+
+export const editBlogPost = async(req, res) =>{
+    try{ 
+        const blogId = req.params.blogId
+        const {body} = req.body
+        const result = await blogService.editBlogPost(blogId, body)
+        res.json(result)
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+}
+
+export const deleteBlogPost = async(req, res) =>{
+    try{
+        const blogId = req.params.blogId
+        const result = await blogService.deleteBlogPost(blogId)
         res.json(result)
     }
     catch(error){

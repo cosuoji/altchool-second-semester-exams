@@ -8,8 +8,8 @@ blogRoute.get("/", blogController.getAllArticles)
 blogRoute.post("/create", authMiddleware, blogController.createArticle)
 blogRoute.get("/search", blogController.searchArticles)
 blogRoute.get("/:userId",blogController.viewBlogByUserId)
-// blogRoute.get("/:userId/draft",blogController.viewDraftByUserId)
-// //blogRoute.get("/:userId/published",blogController.viewPublishedyUserId)
+blogRoute.post("/:blogId/edit", authMiddleware, blogController.editBlogPost)
+blogRoute.delete("/:blogId", authMiddleware, blogController.deleteBlogPost)
 
 
 export default blogRoute

@@ -26,11 +26,11 @@ const blogArticleSchema = mongoose.Schema({
         type: Number,
     },
     reading_time:{
-        type: String,
-        required: true, 
+        type: Number,
     },
     tags:{
         type: String,
+        default: "",
     },
     body:{
         type: String,
