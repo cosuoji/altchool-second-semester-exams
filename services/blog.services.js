@@ -2,8 +2,6 @@ import Blogs from "../database/schema/blog.article.schema.js";
 import ErrorWithStatus from "../exceptions/errorStatus.js";
 import { emailId, userId } from "../middleware/authenticate.middleware.js";
 import User from "../database/schema/user.schema.js";
-import { titleToSearch } from "../controller/blog.controller.js";
-
 
 
 
@@ -43,7 +41,6 @@ export const createArticle = async(title, description, reading_time, tags, body)
 }
 
 export const searchArticles = async(titleToSearch)=>{
-    const filter = {titleToSearch}
     const searchedBlog = await Blogs.find({"title":titleToSearch})
     if(!searchedBlog){
         throw new ErrorWithStatus("Blog Post not found", 400)
@@ -58,4 +55,61 @@ export const searchArticles = async(titleToSearch)=>{
                 blog: searchedBlog
             }
         }
+}
+
+
+export const viewBlogByUserId = async(userId,stateKey,page = 1, limit = 20) =>{
+    //check if user exists
+    const userIdChecker = !Blogs.find({"authorId": userId}) 
+
+    //check if there is a query and if the user exists
+
+    if(stateKey === undefined && !userIdChecker){
+        
+    let filter = {authorId: userId}
+    let total = await Blogs.countDocuments(filter);
+    const userBlogPosts = await Blogs.find({"authorId":userId}).limit(limit)
+
+    if(userBlogPosts.length < 1){
+        return {
+            message: "User has no posts"
+        }
+    }
+    return{
+        message: "Found these Posts",
+        data:{
+            blogs: userBlogPosts
+        }, 
+        meta: {page, limit, total}
+    }
+    }
+
+    //If the request is draft, return all the draft posts from the user
+    if(stateKey.toUpperCase() === "DRAFT" && !userIdChecker){
+        let filter = {"authorId":userId, state:"DRAFT"}
+        let total = await Blogs.countDocuments(filter);
+        let result = await Blogs.find(filter).limit(limit)
+        return {
+        message: "Found these Posts",
+            data:{
+                blogs: result,
+            }, 
+            meta: {page, limit, total}
+        }
+    }
+
+ //If the request is published, return all the published posts from the user
+    if(stateKey.toUpperCase() === "PUBLISHED" && !userIdChecker){
+        let filter = {"authorId":userId, state:"PUBLISHED"}
+        let total = await Blogs.countDocuments(filter);
+        let result = await Blogs.find(filter).limit(limit)
+        return {
+        message: "Published",
+            data:{
+                blogs: result,
+            }, 
+            meta: {page, limit, total}
+        }
+    }
+
 }

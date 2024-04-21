@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken"
-//import { tokenToExport } from "../controller/authentication.controller.js";
 
 export let emailId, userId;
 
