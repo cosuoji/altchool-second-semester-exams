@@ -20,7 +20,8 @@ export const authMiddleware = (req, res, next) =>{
     //     return res.status(401).json({message: "Unauthorized"})
     // }
 
-    jwt.verify(authorization, process.env.JWT_SECRET, (err, decoded)=>{
+    const secret = process.env.JWT_SECRET || "secret"
+    jwt.verify(authorization, secret, (err, decoded)=>{
         if(err){
             return res.status(401).json({message: "Unauthorized"})
         }
