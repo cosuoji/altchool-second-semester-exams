@@ -5,14 +5,39 @@ import User from "../database/schema/user.schema.js";
 
 
 
-export const getAllArticles = async(page = 1, limit = 20) =>{
+export const getAllArticles = async(orderRequest, page = 1, limit = 20) =>{
     try{
+        //set the skip, total amount of blogs, published
         const skip = (page - 1) * limit;
         const filter = {state: "PUBLISHED"}
         const total = await Blogs.countDocuments(filter);
-       
+        
+
+        //Get the sort request
+        const {order} = orderRequest
+
+      //sort queries
+        if(order === "timestamp"){
+           const blogs = await Blogs.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit)
+           return { data: blogs, meta: {page, limit, total}}
+
+        }
+
+        if(order === "read_count"){
+           const blogs = await Blogs.find(filter).sort({ read_count: -1 }).skip(skip).limit(limit)
+           return { data: blogs, meta: {page, limit, total}}
+
+        }
+
+       if(order === "read_time"){
+           const blogs = await Blogs.find(filter).sort({ read_time: -1 }).skip(skip).limit(limit)
+           return { data: blogs, meta: {page, limit, total}}
+
+        }
+
+        
+        
         const blogs = await Blogs.find(filter).skip(skip).limit(limit)
-       
         return { data: blogs, meta: {page, limit, total}}
     }
     catch(err){
@@ -247,6 +272,7 @@ export const displayBlogStats = async(blogId) =>{
     //Get the blog post and update the read count by  one
 
     let updatedReadCount = blogPostToUpdate[0]["read_count"] + 1
+    await Blogs.findOneAndUpdate({_id:blogId}, {read_count: updatedReadCount})
 
     if(!blogPostToUpdate){
         throw new ErrorWithStatus("Blog Post Not Found", 400)
@@ -255,7 +281,7 @@ export const displayBlogStats = async(blogId) =>{
             "Author": blogPostToUpdate[0]["author"],
             "Blog": blogPostToUpdate[0]["body"],
             //update the read count here
-            "Read Count": await Blogs.findOneAndUpdate({_id:blogId}, {read_count: updatedReadCount})
+            "Read Count": blogPostToUpdate[0]["read_count"]
         }
     }
     

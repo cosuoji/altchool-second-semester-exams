@@ -4,8 +4,8 @@ import * as blogService from "../services/blog.services.js"
 
 export const getAllArticles = async(req, res) =>{
     try{
-       
-        const blogs = await blogService.getAllArticles()
+        const orderRequest = req.query
+        const blogs = await blogService.getAllArticles(orderRequest)
         res.json({message: "Get all published posts", data: blogs})
     }
     catch (error){
