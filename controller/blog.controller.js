@@ -71,3 +71,15 @@ export const deleteBlogPost = async(req, res) =>{
         res.status(500).json({message: error.message})
     }
 }
+
+
+export const displayBlogStats = async(req, res) =>{
+    try{
+        const blogId  = req.params.blogId
+        const result = await blogService.displayBlogStats(blogId)
+        res.json(result)
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+}

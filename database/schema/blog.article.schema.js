@@ -24,6 +24,7 @@ const blogArticleSchema = mongoose.Schema({
     },
     read_count:{
         type: Number,
+        default: 0,
     },
     reading_time:{
         type: Number,
@@ -40,6 +41,13 @@ const blogArticleSchema = mongoose.Schema({
     timestamps: true
 })
 
+blogArticleSchema.set("toJSON", {
+    virtuals: true, 
+    versionKey: false, 
+    transform: function(doc, ret){
+        delete ret._id
+    }
+})
 
 const Blogs = mongoose.model("Blogs", blogArticleSchema)
 export default Blogs

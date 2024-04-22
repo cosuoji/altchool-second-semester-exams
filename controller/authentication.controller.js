@@ -1,12 +1,17 @@
 import * as authService from "../services/authenticate.services.js"
 
-export let tokenToExport; 
+export var tokenToUse
 
-export const login = async (req, res)=>{
+export const login = async (req, res, next)=>{
     try {
         const { email, password} = req.body;
         const token = await authService.login(email, password)
-        tokenToExport = token
+        tokenToUse = token.data.accessToken
+
+        if(tokenToUse){
+            req.header.authorization = "Bearer" + tokenToUse
+        }
+        //console.log(tokenToUse)
         res.json({
             message: "Login successful",
             data: {

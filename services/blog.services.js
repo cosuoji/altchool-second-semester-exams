@@ -239,3 +239,25 @@ export const deleteBlogPost = async(blogId, body) =>{
         message: "Blog Deleted",
     }
 }
+
+export const displayBlogStats = async(blogId) =>{
+    //Get the blog post
+    const blogPostToUpdate = await Blogs.find({_id: blogId})
+
+    //Get the blog post and update the read count by  one
+
+    let updatedReadCount = blogPostToUpdate[0]["read_count"] + 1
+
+    if(!blogPostToUpdate){
+        throw new ErrorWithStatus("Blog Post Not Found", 400)
+    } else{
+        return {
+            "Author": blogPostToUpdate[0]["author"],
+            "Blog": blogPostToUpdate[0]["body"],
+            //update the read count here
+            "Read Count": await Blogs.findOneAndUpdate({_id:blogId}, {read_count: updatedReadCount})
+        }
+    }
+    
+
+}
